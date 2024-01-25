@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
+            $table->string('JobCode', 10)->unique();
+            $table->string('JobTitleName', 20);
+            $table->integer('DepartmentID');
             $table->timestamps();
         });
     }

@@ -3,15 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Job;
+use App\Models\Department;
 
 class JobController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $data_job = Job::when($request->cari_job, function ($query) use ($request) {
+			$query->where('JobTitle', 'LIKE', "%{$request->cari_job}%");
+		})->when($request->cari_department, function ($query) use ($request) {
+			$query->where('DepartmentID', 'LIKE', "%{$request->cari_department}%");
+		})->paginate(3);
+
+        $data_job->appends([
+            'cari_job' => $request->cari_job,
+            'cari_department' => $request->cari_department,
+        ]);
+        return view('job/index', compact('data_job'));
     }
 
     /**
@@ -19,7 +31,8 @@ class JobController extends Controller
      */
     public function create()
     {
-        //
+        $data_department = Department::all();
+        return view('job/add', compact('data_department'));
     }
 
     /**
@@ -27,7 +40,14 @@ class JobController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'JobCode' => 'required',
+            'JobTitleName' => 'required',
+            'DepartmentID' => 'required'
+        ]);  
+        Job::create($validatedData);
+
+        return redirect()->route('job')->with('sukses', 'Data Berhasil Ditambahkan');
     }
 
     /**
@@ -43,7 +63,9 @@ class JobController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data_department = Department::all();
+        $job = Job::where('id', $id)->first();
+        return view('job/edit', compact('job', 'data_department'));
     }
 
     /**
@@ -51,7 +73,13 @@ class JobController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data_job = Job::where('id', $id)->first();
+          $data_job->where('id', $data_job->id)
+              ->update([
+                  'JobTitleName' => $request->input('JobTitleName'),
+                  'DepartmentID' => $request->input('DepartmentID')
+              ]);
+          return redirect()->route('job')->with('sukses', 'Data Berhasil Diubah');
     }
 
     /**
@@ -59,6 +87,7 @@ class JobController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Job::where('id', $id)->delete();
+        return redirect()->route('job')->with('sukses', 'Data Berhasil Dihapus');
     }
 }

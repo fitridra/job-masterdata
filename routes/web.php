@@ -13,4 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [App\Http\Controllers\DepartmentController::class, 'index'])->name('dashboard');
+Route::get('/', [App\Http\Controllers\JobController::class, 'index'])->name('job');
+Route::get('/create', [App\Http\Controllers\JobController::class, 'create'])->name('create');
+Route::post('/store',[App\Http\Controllers\JobController::class, 'store'])->name('store');
+Route::get('/edit/{id}',[App\Http\Controllers\JobController::class, 'edit'])->name('edit');
+Route::post('/update/{id}',[App\Http\Controllers\JobController::class, 'update'])->name('update');
+Route::get('/destroy/{id}',[App\Http\Controllers\JobController::class, 'destroy'])->name('destroy');

@@ -14,11 +14,15 @@ class JobsTableSeeder extends Seeder
     public function run(): void
     {
         $jobsData = [
-            // ['atribut1' => 'value1', 'atribut2' => 'value2']
+            ['JobCode' => 'J0001', 'JobTitleName' => 'Software Developer', 'DepartmentID' => '1'],
+            ['JobCode' => 'J0002', 'JobTitleName' => 'System Analyst', 'DepartmentID' => '1'],
+            ['JobCode' => 'J0003', 'JobTitleName' => 'Internal Audit', 'DepartmentID' => '2'],
+            ['JobCode' => 'J0004', 'JobTitleName' => 'SoftDev Manager', 'DepartmentID' => '1'],
+            ['JobCode' => 'J0005', 'JobTitleName' => 'HR Recruiter', 'DepartmentID' => '3']
         ];
 
-        foreach ($jobsData as $jobsData) {
-            Job::create($jobsData);
+        foreach ($jobsData as $jobData) {
+            Job::create($jobData);
         }
     }
 }

@@ -11,10 +11,12 @@ class DepartmentsTableSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run(): void
+    public function run()
     {
         $departmentsData = [
-            // ['atribut1' => 'value1', 'atribut2' => 'value2']
+            ['DepartmentName' => 'Information Technology', 'Abbreviation' => 'IT'],
+            ['DepartmentName' => 'Finance & Accounting', 'Abbreviation' => 'FA'],
+            ['DepartmentName' => 'Human Resources Development', 'Abbreviation' => 'HRD']
         ];
 
         foreach ($departmentsData as $departmentData) {
