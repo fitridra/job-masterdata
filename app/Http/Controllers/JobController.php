@@ -13,8 +13,9 @@ class JobController extends Controller
      */
     public function index(Request $request)
     {
+        $data_department = Department::all();
         $data_job = Job::when($request->cari_job, function ($query) use ($request) {
-			$query->where('JobTitle', 'LIKE', "%{$request->cari_job}%");
+			$query->where('JobTitleName', 'LIKE', "%{$request->cari_job}%");
 		})->when($request->cari_department, function ($query) use ($request) {
 			$query->where('DepartmentID', 'LIKE', "%{$request->cari_department}%");
 		})->paginate(3);
@@ -23,7 +24,7 @@ class JobController extends Controller
             'cari_job' => $request->cari_job,
             'cari_department' => $request->cari_department,
         ]);
-        return view('job/index', compact('data_job'));
+        return view('job/index', compact('data_job','data_department'));
     }
 
     /**
@@ -32,7 +33,12 @@ class JobController extends Controller
     public function create()
     {
         $data_department = Department::all();
-        return view('job/add', compact('data_department'));
+        $lastJob = Job::latest('JobCode')->first();
+        $lastJobNumber = (int)substr($lastJob->JobCode, 1);
+        $newJobNumber = $lastJobNumber + 1;
+        $newJobCode = 'J' . str_pad($newJobNumber, 4, '0', STR_PAD_LEFT);
+
+        return view('job/add', compact('data_department','newJobCode'));
     }
 
     /**
@@ -45,7 +51,7 @@ class JobController extends Controller
             'JobTitleName' => 'required',
             'DepartmentID' => 'required'
         ]);  
-        Job::create($validatedData);
+        Job::create($request->all());
 
         return redirect()->route('job')->with('sukses', 'Data Berhasil Ditambahkan');
     }

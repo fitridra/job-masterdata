@@ -5,7 +5,7 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title fw-semibold mb-4">Job Title Master Data</h5>
-            <p class="mb-0">Berisi data-data tentang master data job.</p>
+            <p class="mb-3">Berisi data-data tentang master data job.</p>
             @if(session('sukses'))
             <div class="alert alert-success" role="alert">
                 {{session('sukses')}}
@@ -15,23 +15,23 @@
             <div class="card w-100 mt-3">
                 <div class="card-body p-4">
                     <h6>Search By</h6>
-                    <div class="row g-3">
+                    <form class="row g-3" method="GET" action="{{route('job')}}">
                         <div class="col">
-                            <input type="text" class="form-control" placeholder="Job Title" name=""
-                                aria-label="Job Title" required>
+                            <input type="text" class="form-control" placeholder="Job Title" name="cari_job"
+                                aria-label="Job Title">
                         </div>
                         <div class="col">
-                            <select class="form-select" id="exampleInputName1" name="DepartmentID" required>
+                            <select class="form-select" id="exampleInputName1" name="cari_department">
                                 <option value="" selected>Department Name</option>
-                                <option value="department1">Department 1</option>
-                                <option value="department2">Department 2</option>
-                                <option value="department3">Department 3</option>
+                                @foreach($data_department as $dep)
+                                <option value="{{$dep->id}}">{{$dep->DepartmentName}}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div>
-                            <button type="button" class="btn btn-primary">Search</button>
+                            <button type="submit" class="btn btn-primary">Search</button>
                         </div>
-                    </div>
+                    </form>
                     <a href="/create" class="btn btn-primary my-3"><i class="ti ti-plus"></i> Add New Data</a>
                     <div class="table-responsive">
                         <table class="table text-nowrap mb-0 align-middle">

@@ -8,25 +8,29 @@
 
             <div class="card mt-3">
                 <div class="card-body">
-                    <form>
+                    <form action="{{route('update',$job->id)}}" method="POST">
+                        @csrf
                         <div class="mb-3">
                             <label for="exampleInputCode1" class="form-label">Job Code</label>
-                            <input type="text" class="form-control" value="J0001" id="exampleInputCode1" disabled>
+                            <input type="text" class="form-control" name="JobCode" value="{{$job->JobCode}}"
+                                id="exampleInputCode1" readonly>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputTitle1" class="form-label">Job Title</label>
-                            <input type="text" class="form-control" id="exampleInputTitle1" aria-describedby="titleHelp"
-                                maxlength="20" required>
+                            <input type="text" class="form-control" name="JobTitleName" id="exampleInputTitle1"
+                                value="{{$job->JobTitleName}}" aria-describedby="titleHelp" maxlength="20" required>
                             <div id="titleHelp" class="form-text">Job Title Field must be less than equal to 20
                                 characters long.</div>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputName1" class="form-label">Department Name</label>
-                            <select class="form-select" id="exampleInputName1">
+                            <select class="form-select" id="exampleInputName1" name="DepartmentID">
                                 <option value="" selected>Select a Department</option>
-                                <option value="department1">Department 1</option>
-                                <option value="department2">Department 2</option>
-                                <option value="department3">Department 3</option>
+                                @foreach($data_department as $dep)
+                                <option value="{{$dep->id}}" @if($dep->id == $job->DepartmentID) selected @endif>
+                                    {{$dep->DepartmentName}}
+                                </option>
+                                @endforeach
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary m-1">Save</button>
